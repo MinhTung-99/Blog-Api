@@ -1,0 +1,77 @@
+package com.example.blogapi.api;
+
+import com.example.blogapi.service.UploadService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+@RestController
+public class UploadFileApi {
+
+    @Autowired
+    private UploadService uploadService;
+
+    @PostMapping("api/upload/image/users/{idUser}/posts/{idPost}")
+    public String saveImage(@RequestParam("image") MultipartFile photo, @PathVariable("idPost") long idPost,  @PathVariable("idUser") long idUser) {
+        return uploadService.uploadImage(photo, idPost, idUser);
+    }
+
+    @RequestMapping(value = "image/{photo:.+}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<ByteArrayResource> getImage(@PathVariable("photo") String photo) {
+        try {
+            if(!photo.equals("")) {
+                Path fileName = Paths.get("uploads", photo);
+                byte[] buffer;
+                buffer = Files.readAllBytes(fileName);
+                ByteArrayResource byteArrayResource = new ByteArrayResource(buffer);
+                return ResponseEntity.ok()
+                        .contentLength(buffer.length)
+                        .contentType(MediaType.parseMediaType("image/png"))
+                        .body(byteArrayResource);
+            }
+        } catch (IOException e) {
+			e.printStackTrace();
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+//====================MP4=============================
+    @PostMapping("api/upload/mp3/users/{idUser}/posts/{idPost}")
+    public String saveMp4(@RequestParam("mp3") MultipartFile mp3, @PathVariable("idPost") long idPost,  @PathVariable("idUser") long idUser) {
+
+        return uploadService.saveMP4(mp3, idPost, idUser);
+    }
+
+    @RequestMapping(value = "audio/{audio:.+}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<ByteArrayResource> getMP4(@PathVariable("audio") String audio){
+        try {
+            if(!audio.equals("")) {
+                Path fileName = Paths.get("uploads", audio);
+                byte[] buffer;
+                buffer = Files.readAllBytes(fileName);
+                ByteArrayResource byteArrayResource = new ByteArrayResource(buffer);
+                return ResponseEntity.ok()
+                        .contentLength(buffer.length)
+                        .contentType(MediaType.parseMediaType(MediaType.IMAGE_JPEG_VALUE))
+                        .body(byteArrayResource);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+}
