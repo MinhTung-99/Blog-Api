@@ -1,6 +1,7 @@
 package com.example.blogapi.service;
 
 import com.example.blogapi.convert.UserConvert;
+import com.example.blogapi.dto.SearchDTO;
 import com.example.blogapi.dto.UserDTO;
 import com.example.blogapi.entity.UserEntity;
 import com.example.blogapi.repository.UserRepository;
@@ -35,6 +36,22 @@ public class UserService implements UserDetailsService {
         for(UserEntity item : entities) {
             UserDTO userDTO = userConvert.toDTO(item);
             results.add(userDTO);
+        }
+
+        return results;
+    }
+
+    public List<UserDTO> searchUser (SearchDTO dto) {
+        List<UserDTO> results = new ArrayList<>();
+        List<UserEntity> entities = userRepository.findAll();
+
+        for(UserEntity item : entities) {
+            if (item.getEmail() != null) {
+                if (item.getEmail().contains(dto.getTitle())) {
+                    UserDTO userDTO = userConvert.toDTO(item);
+                    results.add(userDTO);
+                }
+            }
         }
 
         return results;

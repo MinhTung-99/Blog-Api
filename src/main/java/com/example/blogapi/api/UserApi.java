@@ -1,5 +1,6 @@
 package com.example.blogapi.api;
 
+import com.example.blogapi.dto.SearchDTO;
 import com.example.blogapi.dto.UserDTO;
 import com.example.blogapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ public class UserApi {
     @GetMapping("api/user")
     public List<UserDTO> showUser () {
         return userService.findAll();
+    }
+
+    @GetMapping("api/user/search")
+    public List<UserDTO> searchUser (@RequestBody SearchDTO dto) {
+        return userService.searchUser(dto);
     }
 
     @PostMapping("api/register")
