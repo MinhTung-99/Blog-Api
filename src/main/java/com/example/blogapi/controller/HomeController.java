@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,11 +35,10 @@ public class HomeController {
     private UserRepository userRepository;
 
     @PostMapping("/authenticate")
-    public JwtResponse authenticate (@RequestBody JwtRequest jwtRequest) {
+    public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) {
 
         List<UserEntity> userEntities = userRepository.findAll();
-
-        for (UserEntity entity: userEntities) {
+        for (UserEntity entity : userEntities) {
             if (jwtRequest.getUsername().equals(entity.getEmail()) && jwtRequest.getPassword().equals(entity.getPassword())) {
                 try {
                     authenticationManager.authenticate(
@@ -62,7 +58,7 @@ public class HomeController {
 
                 UserUtil.ID_USER = entity.getId();
 
-                return  new JwtResponse(token, entity.getId());
+                return new JwtResponse(token, entity.getId());
             }
         }
 
