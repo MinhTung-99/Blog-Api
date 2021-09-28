@@ -13,6 +13,7 @@ public class UserConvert {
         userEntity.setPassword(dto.getPassword());
         userEntity.setFirstName(dto.getFirstName());
         userEntity.setLastName(dto.getLastName());
+        userEntity.setAvatar(dto.getAvatar());
 
         return userEntity;
     }
@@ -26,6 +27,7 @@ public class UserConvert {
         userDTO.setLastName(userEntity.getLastName());
         userDTO.setCreatedDate(userEntity.getCreatedDate());
         userDTO.setModifileDate(userEntity.getModifileDate());
+        userDTO.setAvatar(userEntity.getAvatar());
 
         return userDTO;
     }

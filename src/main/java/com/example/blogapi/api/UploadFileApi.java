@@ -30,6 +30,11 @@ public class UploadFileApi {
         return uploadService.uploadImageCourse(photo, idCourse, idUser);
     }
 
+    @PostMapping("api/upload/image/users/{idUser}/avatar")
+    public String saveImageUser(@RequestParam("image") MultipartFile photo, @PathVariable("idUser") long idUser) {
+        return uploadService.uploadImageUser(photo, idUser);
+    }
+
     @RequestMapping(value = "image/{photo:.+}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<ByteArrayResource> getImage(@PathVariable("photo") String photo) {

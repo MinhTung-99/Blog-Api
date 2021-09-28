@@ -79,6 +79,29 @@ public class UploadService {
         return "Field";
     }
 
+    public String uploadImageUser (MultipartFile photo, Long idUser) {
+
+        UserEntity userEntity = userRepository.findOneById(idUser);
+
+        if (userEntity != null && userEntity.getTypeUser() != null) {
+            if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
+                Path path = Paths.get("uploads/");
+                try {
+                    InputStream inputStream = photo.getInputStream();
+                    Files.copy(inputStream, path.resolve(photo.getOriginalFilename()),
+                            StandardCopyOption.REPLACE_EXISTING);
+                    userEntity.setAvatar("http://localhost:8081/image/" + photo.getOriginalFilename());
+                    userRepository.save(userEntity);
+                    return "Success";
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return "Field";
+    }
+
     public String saveMP4 (MultipartFile mp3, Long idPost, Long idUser) {
         UserEntity userEntity = userRepository.findOneById(idUser);
         PostEntity postEntity = postRepository.findOneById(idPost);
