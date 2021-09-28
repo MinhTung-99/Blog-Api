@@ -8,4 +8,6 @@ public class CourseDTO extends BaseEntity {
     private String name;
     private Long totalUser;
     private String image;
+    private String description;
+    private Boolean isJoin;
 }

@@ -15,6 +15,10 @@ public class CourseConvert {
         courseDTO.setId(courseEntity.getId());
         courseDTO.setCreatedDate(courseEntity.getCreatedDate());
         courseDTO.setModifileDate(courseEntity.getModifileDate());
+        courseDTO.setIsJoin(courseEntity.getIsJoin());
+        courseDTO.setId(courseEntity.getId());
+        courseDTO.setTotalUser(courseEntity.getTotalUser());
+        courseDTO.setDescription(courseEntity.getDescription());
 
         return courseDTO;
     }
@@ -24,6 +28,9 @@ public class CourseConvert {
         courseEntity.setName(courseDTO.getName());
         courseEntity.setImage(courseDTO.getImage());
         courseEntity.setTotalUser(courseDTO.getTotalUser());
+        courseEntity.setIsJoin(false);
+        courseEntity.setTotalUser(0L);
+        courseEntity.setDescription(courseDTO.getDescription());
 
         return courseEntity;
     }

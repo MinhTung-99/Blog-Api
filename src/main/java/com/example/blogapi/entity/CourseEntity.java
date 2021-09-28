@@ -14,4 +14,6 @@ public class CourseEntity extends BaseEntity {
     @Column private String name;
     @Column private Long totalUser;
     @Column private String image;
+    @Column private String description;
+    @Column private Boolean isJoin;
 }

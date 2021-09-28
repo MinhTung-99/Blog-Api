@@ -24,6 +24,11 @@ public class PostApi {
         return postService.podCastAll();
     }
 
+    @GetMapping("api/courses")
+    public List<PostDTO> showPostCourse () {
+        return postService.courseFindAll();
+    }
+
     @GetMapping("api/posts/search")
     public List<PostDTO> searchPost (@RequestBody SearchDTO searchDTO) {
         return postService.searchPost(searchDTO);
@@ -48,5 +53,11 @@ public class PostApi {
     public PostDTO updatePost (@RequestBody PostDTO model, @PathVariable("id") long id) {
         model.setId(id);
         return postService.update(model);
+    }
+
+    //==============GROUP==================
+    @PostMapping("api/posts/course/{idCourse}")
+    public PostDTO savePostCourse (@RequestBody PostDTO model, @PathVariable("idCourse") long idCourse) {
+        return postService.save(model, idCourse);
     }
 }

@@ -1,8 +1,10 @@
 package com.example.blogapi.service;
 
 import com.example.blogapi.constant.UserUtil;
+import com.example.blogapi.entity.CourseEntity;
 import com.example.blogapi.entity.PostEntity;
 import com.example.blogapi.entity.UserEntity;
+import com.example.blogapi.repository.CourseRepository;
 import com.example.blogapi.repository.PostRepository;
 import com.example.blogapi.repository.UserRepository;
 import org.apache.tomcat.util.bcel.Const;
@@ -24,6 +26,9 @@ public class UploadService {
     private PostRepository postRepository;
 
     @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     public String uploadImage (MultipartFile photo, Long idPost, Long idUser) {
@@ -38,8 +43,32 @@ public class UploadService {
                     InputStream inputStream = photo.getInputStream();
                     Files.copy(inputStream, path.resolve(photo.getOriginalFilename()),
                             StandardCopyOption.REPLACE_EXISTING);
-                    postEntity.setImage("http://localhost:8080/image/" + photo.getOriginalFilename());
+                    postEntity.setImage("http://localhost:8081/image/" + photo.getOriginalFilename());
                     postRepository.save(postEntity);
+                    return "Success";
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return "Field";
+    }
+
+    public String uploadImageCourse (MultipartFile photo, Long idCourse, Long idUser) {
+
+        UserEntity userEntity = userRepository.findOneById(idUser);
+        CourseEntity courseEntity = courseRepository.findOneById(idCourse);
+
+        if (userEntity != null && userEntity.getTypeUser() != null) {
+            if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
+                Path path = Paths.get("uploads/");
+                try {
+                    InputStream inputStream = photo.getInputStream();
+                    Files.copy(inputStream, path.resolve(photo.getOriginalFilename()),
+                            StandardCopyOption.REPLACE_EXISTING);
+                    courseEntity.setImage("http://localhost:8081/image/" + photo.getOriginalFilename());
+                    courseRepository.save(courseEntity);
                     return "Success";
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -61,7 +90,7 @@ public class UploadService {
                 try {
                     InputStream inputStream = mp3.getInputStream();
                     Files.copy(inputStream, path.resolve(mp3.getOriginalFilename()));
-                    postEntity.setAudio("http://localhost:8080/audio/" + mp3.getOriginalFilename());
+                    postEntity.setAudio("http://localhost:8081/audio/" + mp3.getOriginalFilename());
                     postRepository.save(postEntity);
                     return "Success";
                 } catch (IOException e) {

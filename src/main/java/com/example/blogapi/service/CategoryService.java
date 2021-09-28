@@ -2,6 +2,7 @@ package com.example.blogapi.service;
 
 import com.example.blogapi.convert.CategoryConvert;
 import com.example.blogapi.dto.CategoryDTO;
+import com.example.blogapi.dto.SearchCategoryDTO;
 import com.example.blogapi.entity.CategoryEntity;
 import com.example.blogapi.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,20 @@ public class CategoryService {
         for(CategoryEntity item : entities) {
             CategoryDTO categoryDTO = categoryConvert.toDTO(item);
             results.add(categoryDTO);
+        }
+
+        return results;
+    }
+
+    public List<CategoryDTO> searchCategory(SearchCategoryDTO searchCategoryDTO) {
+        List<CategoryDTO> results = new ArrayList<>();
+        List<CategoryEntity> entities = categoryRepository.findAll();
+
+        for(CategoryEntity item : entities) {
+            if (item.getName().contains(searchCategoryDTO.getTitle())) {
+                CategoryDTO categoryDTO = categoryConvert.toDTO(item);
+                results.add(categoryDTO);
+            }
         }
 
         return results;

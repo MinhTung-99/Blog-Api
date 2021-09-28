@@ -1,6 +1,7 @@
 package com.example.blogapi.api;
 
 import com.example.blogapi.dto.CategoryDTO;
+import com.example.blogapi.dto.SearchCategoryDTO;
 import com.example.blogapi.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,11 @@ public class CategoryApi {
     @GetMapping("api/category")
     public List<CategoryDTO> showCategory () {
         return categoryService.findAll();
+    }
+
+    @GetMapping("api/category/search")
+    public List<CategoryDTO> searchCategory (@RequestBody SearchCategoryDTO searchCategoryDTO) {
+        return categoryService.searchCategory(searchCategoryDTO);
     }
 
     @PostMapping("api/category")

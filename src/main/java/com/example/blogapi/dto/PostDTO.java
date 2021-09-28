@@ -20,6 +20,8 @@ public class PostDTO extends BaseDTO {
     private Long numComment;
     private Long numLove;
     private Boolean isLove;
+    private Boolean isGroup;
+    private Long idGroup;
 
     @Data
     public class User {

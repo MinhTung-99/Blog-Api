@@ -76,7 +76,7 @@ public class PostService {
         List<UserLoveEntity> userLoveEntities = userLoveRepository.findAll();
 
         for(PostEntity item : entities) {
-            if (item.getAudio() == null) {
+            if (item.getAudio() == null && item.getIsGroup() == null) {
                 for (UserLoveEntity entity: userLoveEntities) {
                     if (entity.getIdPost() == item.getId() && entity.getIdUser() == UserUtil.ID_USER) {
                         item.setIsLove(true);
@@ -97,7 +97,7 @@ public class PostService {
         List<PostEntity> postEntities = postRepository.findAll();
 
         for (PostEntity entity: postEntities) {
-            if (entity.getAudio() == null) {
+            if (entity.getAudio() == null && entity.getIsGroup() == null) {
                 if (entity.getTitle().toLowerCase().contains(searchDTO.getTitle().toLowerCase())) {
                     UserEntity userEntity = userRepository.findOneById(entity.getIdUser());
 
@@ -132,6 +132,30 @@ public class PostService {
         return results;
     }
 
+    public List<PostDTO> courseFindAll() {
+        List<PostDTO> results = new ArrayList<>();
+        List<PostEntity> entities = postRepository.findAll();
+        List<UserLoveEntity> userLoveEntities = userLoveRepository.findAll();
+
+        for(PostEntity item : entities) {
+            if (item.getIsGroup() != null) {
+                if (item.getIsGroup()) {
+                    for (UserLoveEntity entity: userLoveEntities) {
+                        if (entity.getIdPost() == item.getId() && entity.getIdUser() == UserUtil.ID_USER) {
+                            item.setIsLove(true);
+                        }
+                    }
+                    UserEntity userEntity = userRepository.findOneById(item.getIdUser());
+
+                    PostDTO postDTO = postConvert.toDTO(item, userEntity);
+                    results.add(postDTO);
+                }
+            }
+        }
+
+        return results;
+    }
+
     public List<PostDTO> searchPostCast (SearchDTO searchDTO) {
         List<PostDTO> results = new ArrayList<>();
         List<PostEntity> postEntities = postRepository.findAll();
@@ -148,5 +172,22 @@ public class PostService {
         }
 
         return results;
+    }
+
+    //==============GROUP=================
+    public PostDTO save (PostDTO dto, Long idGroup) {
+        UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
+        if (userEntity != null && userEntity.getTypeUser() != null) {
+            if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
+                PostEntity postEntity = postConvert.toEntity(dto);
+                postEntity.setIsGroup(true);
+                postEntity.setIdGroup(idGroup);
+                postEntity = postRepository.save(postEntity);
+
+                return postConvert.toDTO(postEntity);
+            }
+        }
+
+        return new PostDTO();
     }
 }

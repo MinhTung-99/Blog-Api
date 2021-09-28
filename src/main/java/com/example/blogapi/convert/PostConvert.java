@@ -39,6 +39,8 @@ public class PostConvert {
         postDTO.setNumLove(postEntity.getNumLove());
         postDTO.setIsLove(postEntity.getIsLove());
         postDTO.setAudio(postDTO.getAudio());
+        postDTO.setIsGroup(postDTO.getIsGroup());
+        postDTO.setIdGroup(postDTO.getIdGroup());
 
         return postDTO;
     }

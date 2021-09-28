@@ -20,4 +20,6 @@ public class PostEntity extends BaseEntity {
     @Column private Long numComment;
     @Column private Long numLove;
     @Column private Boolean isLove;
+    @Column private Boolean isGroup;
+    @Column private Long idGroup;
 }
