@@ -21,6 +21,7 @@ public class PostConvert {
         postEntity.setNumComment(0L);
         postEntity.setNumLove(0L);
         postEntity.setIsLove(false);
+        postEntity.setRanker(postDTO.getRanker());
 
         return postEntity;
     }
@@ -38,9 +39,10 @@ public class PostConvert {
         postDTO.setNumComment(postEntity.getNumComment());
         postDTO.setNumLove(postEntity.getNumLove());
         postDTO.setIsLove(postEntity.getIsLove());
-        postDTO.setAudio(postDTO.getAudio());
-        postDTO.setIsGroup(postDTO.getIsGroup());
-        postDTO.setIdGroup(postDTO.getIdGroup());
+        postDTO.setAudio(postEntity.getAudio());
+        postDTO.setIsGroup(postEntity.getIsGroup());
+        postDTO.setIdGroup(postEntity.getIdGroup());
+        postDTO.setRanker(postEntity.getRanker());
 
         return postDTO;
     }

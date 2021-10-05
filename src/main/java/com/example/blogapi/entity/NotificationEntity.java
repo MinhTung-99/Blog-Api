@@ -11,6 +11,8 @@ import javax.persistence.Table;
 @Data
 public class NotificationEntity extends BaseEntity {
     private @Column Long idPost;
+    private @Column Long idComment;
+    private @Column Long idCourse;
     private @Column Long idUser;
     private @Column String type;
 }

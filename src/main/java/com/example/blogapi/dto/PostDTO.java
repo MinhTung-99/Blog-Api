@@ -22,6 +22,7 @@ public class PostDTO extends BaseDTO {
     private Boolean isLove;
     private Boolean isGroup;
     private Long idGroup;
+    private String ranker;
 
     @Data
     public class User {

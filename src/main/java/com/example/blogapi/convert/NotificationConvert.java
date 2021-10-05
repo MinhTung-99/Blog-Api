@@ -15,13 +15,23 @@ public class NotificationConvert {
         notificationPostDTO.setId(entity.getId());
         notificationPostDTO.setCreatedDate(entity.getCreatedDate());
         notificationPostDTO.setModifileDate(entity.getModifileDate());
+        notificationPostDTO.setIdComment(entity.getIdComment());
+        notificationPostDTO.setIdCourse(entity.getIdCourse());
 
         return notificationPostDTO;
     }
 
     public NotificationEntity toEntity (NotificationDTO dto) {
         NotificationEntity notificationPostEntity = new NotificationEntity();
-        notificationPostEntity.setIdPost(dto.getIdPost());
+        if (dto.getIdPost() != null) {
+            notificationPostEntity.setIdPost(dto.getIdPost());
+        }
+        if (dto.getIdCourse() != null) {
+            notificationPostEntity.setIdCourse(dto.getIdCourse());
+        }
+        if (dto.getIdComment() != null) {
+            notificationPostEntity.setIdComment(dto.getIdComment());
+        }
         notificationPostEntity.setIdUser(dto.getIdUser());
         notificationPostEntity.setType(dto.getType());
 

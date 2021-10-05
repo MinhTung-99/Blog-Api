@@ -11,6 +11,8 @@ public class NotificationDTO extends BaseDTO {
 
     private Long idPost;
     private Long idUser;
+    private Long idComment;
+    private Long idCourse;
     private String type;
     private User user;
 

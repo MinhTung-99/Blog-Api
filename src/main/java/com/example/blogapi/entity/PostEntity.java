@@ -22,4 +22,5 @@ public class PostEntity extends BaseEntity {
     @Column private Boolean isLove;
     @Column private Boolean isGroup;
     @Column private Long idGroup;
+    @Column private String ranker;
 }
