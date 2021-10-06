@@ -1,5 +1,6 @@
 package com.example.blogapi.convert;
 
+import com.example.blogapi.constant.RankerUtil;
 import com.example.blogapi.dto.UserDTO;
 import com.example.blogapi.entity.UserEntity;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ public class UserConvert {
         userEntity.setFirstName(dto.getFirstName());
         userEntity.setLastName(dto.getLastName());
         userEntity.setAvatar(dto.getAvatar());
+        userEntity.setRanker(RankerUtil.COPPER);
 
         return userEntity;
     }
@@ -28,6 +30,7 @@ public class UserConvert {
         userDTO.setCreatedDate(userEntity.getCreatedDate());
         userDTO.setModifileDate(userEntity.getModifileDate());
         userDTO.setAvatar(userEntity.getAvatar());
+        userDTO.setRanker(userEntity.getRanker());
 
         return userDTO;
     }

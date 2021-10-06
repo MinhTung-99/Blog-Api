@@ -10,4 +10,5 @@ public class UserDTO extends BaseDTO {
     private String lastName;
     private String avatar;
     private String typeUser;
+    private String ranker;
 }

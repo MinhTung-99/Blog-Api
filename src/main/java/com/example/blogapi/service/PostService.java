@@ -1,5 +1,6 @@
 package com.example.blogapi.service;
 
+import com.example.blogapi.constant.RankerUtil;
 import com.example.blogapi.constant.UserUtil;
 import com.example.blogapi.convert.PostConvert;
 import com.example.blogapi.dto.PostDTO;
@@ -13,6 +14,7 @@ import com.example.blogapi.repository.PostRepository;
 import com.example.blogapi.repository.UserLoveRepository;
 import com.example.blogapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,40 +35,53 @@ public class PostService {
     @Autowired
     private PostConvert postConvert;
 
-    public PostDTO save (PostDTO dto) {
-        UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
-        if (userEntity != null && userEntity.getTypeUser() != null) {
-            if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
-                PostEntity postEntity = postConvert.toEntity(dto);
-                postEntity = postRepository.save(postEntity);
+    public PostDTO save(PostDTO dto) {
+        if (dto.getRanker().equals(RankerUtil.COPPER) || dto.getRanker().equals(RankerUtil.YELLOW)
+                || dto.getRanker().equals(RankerUtil.DIAMOND) || dto.getRanker().equals(RankerUtil.CHALLENGE)) {
 
-                return postConvert.toDTO(postEntity);
+            UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
+            if (userEntity != null && userEntity.getTypeUser() != null) {
+                if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
+                    PostEntity postEntity = postConvert.toEntity(dto);
+                    postEntity = postRepository.save(postEntity);
+
+                    return postConvert.toDTO(postEntity);
+                }
             }
+
+            return new PostDTO();
+
+        }
+        return new PostDTO();
+    }
+
+    public PostDTO update(PostDTO dto) {
+        if (dto.getRanker().equals(RankerUtil.COPPER) || dto.getRanker().equals(RankerUtil.YELLOW)
+                || dto.getRanker().equals(RankerUtil.DIAMOND) || dto.getRanker().equals(RankerUtil.CHALLENGE)) {
+
+            UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
+            PostEntity postEntitySearch = postRepository.findOneById(dto.getId());
+            PostEntity oldEntity = postRepository.findOneById(dto.getId());
+            if (postEntitySearch != null && userEntity != null && userEntity.getTypeUser() != null) {
+
+                if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
+                    PostEntity postEntity = postConvert.toEntity(dto, oldEntity);
+                    postEntity.setId(dto.getId());
+
+                    postEntity = postRepository.save(postEntity);
+
+                    return postConvert.toDTO(postEntity);
+                }
+            }
+
+            return new PostDTO();
+
         }
 
         return new PostDTO();
     }
 
-    public PostDTO update (PostDTO dto) {
-        UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
-        PostEntity postEntitySearch = postRepository.findOneById(dto.getId());
-        PostEntity oldEntity = postRepository.findOneById(dto.getId());
-        if (postEntitySearch != null && userEntity != null && userEntity.getTypeUser() != null) {
-
-            if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
-                PostEntity postEntity = postConvert.toEntity(dto, oldEntity);
-                postEntity.setId(dto.getId());
-
-                postEntity = postRepository.save(postEntity);
-
-                return postConvert.toDTO(postEntity);
-            }
-        }
-
-        return new PostDTO();
-    }
-
-    public void delete (Long id) {
+    public void delete(Long id) {
         postRepository.deleteById(id);
     }
 
@@ -75,9 +90,9 @@ public class PostService {
         List<PostEntity> entities = postRepository.findAll();
         List<UserLoveEntity> userLoveEntities = userLoveRepository.findAll();
 
-        for(PostEntity item : entities) {
+        for (PostEntity item : entities) {
             if (item.getAudio() == null && item.getIsGroup() == null) {
-                for (UserLoveEntity entity: userLoveEntities) {
+                for (UserLoveEntity entity : userLoveEntities) {
                     if (entity.getIdPost() == item.getId() && entity.getIdUser() == UserUtil.ID_USER) {
                         item.setIsLove(true);
                     }
@@ -92,11 +107,11 @@ public class PostService {
         return results;
     }
 
-    public List<PostDTO> searchPost (SearchDTO searchDTO) {
+    public List<PostDTO> searchPost(SearchDTO searchDTO) {
         List<PostDTO> results = new ArrayList<>();
         List<PostEntity> postEntities = postRepository.findAll();
 
-        for (PostEntity entity: postEntities) {
+        for (PostEntity entity : postEntities) {
             if (entity.getAudio() == null && entity.getIsGroup() == null) {
                 if (entity.getTitle().toLowerCase().contains(searchDTO.getTitle().toLowerCase())) {
                     UserEntity userEntity = userRepository.findOneById(entity.getIdUser());
@@ -115,9 +130,9 @@ public class PostService {
         List<PostEntity> entities = postRepository.findAll();
         List<UserLoveEntity> userLoveEntities = userLoveRepository.findAll();
 
-        for(PostEntity item : entities) {
+        for (PostEntity item : entities) {
             if (item.getAudio() != null) {
-                for (UserLoveEntity entity: userLoveEntities) {
+                for (UserLoveEntity entity : userLoveEntities) {
                     if (entity.getIdPost() == item.getId() && entity.getIdUser() == UserUtil.ID_USER) {
                         item.setIsLove(true);
                     }
@@ -137,10 +152,10 @@ public class PostService {
         List<PostEntity> entities = postRepository.findAll();
         List<UserLoveEntity> userLoveEntities = userLoveRepository.findAll();
 
-        for(PostEntity item : entities) {
+        for (PostEntity item : entities) {
             if (item.getIsGroup() != null) {
                 if (item.getIsGroup()) {
-                    for (UserLoveEntity entity: userLoveEntities) {
+                    for (UserLoveEntity entity : userLoveEntities) {
                         if (entity.getIdPost() == item.getId() && entity.getIdUser() == UserUtil.ID_USER) {
                             item.setIsLove(true);
                         }
@@ -156,11 +171,11 @@ public class PostService {
         return results;
     }
 
-    public List<PostDTO> searchPostCast (SearchDTO searchDTO) {
+    public List<PostDTO> searchPostCast(SearchDTO searchDTO) {
         List<PostDTO> results = new ArrayList<>();
         List<PostEntity> postEntities = postRepository.findAll();
 
-        for (PostEntity entity: postEntities) {
+        for (PostEntity entity : postEntities) {
             if (entity.getAudio() != null) {
                 if (entity.getTitle().toLowerCase().contains(searchDTO.getTitle().toLowerCase())) {
                     UserEntity userEntity = userRepository.findOneById(entity.getIdUser());
@@ -175,7 +190,7 @@ public class PostService {
     }
 
     //==============GROUP=================
-    public PostDTO save (PostDTO dto, Long idGroup) {
+    public PostDTO save(PostDTO dto, Long idGroup) {
         UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
         if (userEntity != null && userEntity.getTypeUser() != null) {
             if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {

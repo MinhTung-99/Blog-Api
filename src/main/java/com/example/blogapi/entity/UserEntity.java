@@ -16,6 +16,7 @@ public class UserEntity extends BaseEntity {
     @Column private String firstName;
     @Column private String lastName;
     @Column private String avatar;
+    @Column private String ranker;
     @Column private String typeUser;
 
 }
