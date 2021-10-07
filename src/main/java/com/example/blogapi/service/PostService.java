@@ -36,46 +36,50 @@ public class PostService {
     private PostConvert postConvert;
 
     public PostDTO save(PostDTO dto) {
-        if (dto.getRanker().equals(RankerUtil.COPPER) || dto.getRanker().equals(RankerUtil.YELLOW)
-                || dto.getRanker().equals(RankerUtil.DIAMOND) || dto.getRanker().equals(RankerUtil.CHALLENGE)) {
+        if (dto.getRanker() != null) {
+            if (dto.getRanker().equals(RankerUtil.COPPER) || dto.getRanker().equals(RankerUtil.YELLOW)
+                    || dto.getRanker().equals(RankerUtil.DIAMOND) || dto.getRanker().equals(RankerUtil.CHALLENGE)) {
 
-            UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
-            if (userEntity != null && userEntity.getTypeUser() != null) {
-                if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
-                    PostEntity postEntity = postConvert.toEntity(dto);
-                    postEntity = postRepository.save(postEntity);
+                UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
+                if (userEntity != null && userEntity.getTypeUser() != null) {
+                    if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
+                        PostEntity postEntity = postConvert.toEntity(dto);
+                        postEntity = postRepository.save(postEntity);
 
-                    return postConvert.toDTO(postEntity);
+                        return postConvert.toDTO(postEntity);
+                    }
                 }
+
+                return new PostDTO();
+
             }
-
-            return new PostDTO();
-
         }
         return new PostDTO();
     }
 
     public PostDTO update(PostDTO dto) {
-        if (dto.getRanker().equals(RankerUtil.COPPER) || dto.getRanker().equals(RankerUtil.YELLOW)
-                || dto.getRanker().equals(RankerUtil.DIAMOND) || dto.getRanker().equals(RankerUtil.CHALLENGE)) {
+        if (dto.getRanker() != null) {
+            if (dto.getRanker().equals(RankerUtil.COPPER) || dto.getRanker().equals(RankerUtil.YELLOW)
+                    || dto.getRanker().equals(RankerUtil.DIAMOND) || dto.getRanker().equals(RankerUtil.CHALLENGE)) {
 
-            UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
-            PostEntity postEntitySearch = postRepository.findOneById(dto.getId());
-            PostEntity oldEntity = postRepository.findOneById(dto.getId());
-            if (postEntitySearch != null && userEntity != null && userEntity.getTypeUser() != null) {
+                UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
+                PostEntity postEntitySearch = postRepository.findOneById(dto.getId());
+                PostEntity oldEntity = postRepository.findOneById(dto.getId());
+                if (postEntitySearch != null && userEntity != null && userEntity.getTypeUser() != null) {
 
-                if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
-                    PostEntity postEntity = postConvert.toEntity(dto, oldEntity);
-                    postEntity.setId(dto.getId());
+                    if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
+                        PostEntity postEntity = postConvert.toEntity(dto, oldEntity);
+                        postEntity.setId(dto.getId());
 
-                    postEntity = postRepository.save(postEntity);
+                        postEntity = postRepository.save(postEntity);
 
-                    return postConvert.toDTO(postEntity);
+                        return postConvert.toDTO(postEntity);
+                    }
                 }
+
+                return new PostDTO();
+
             }
-
-            return new PostDTO();
-
         }
 
         return new PostDTO();

@@ -1,5 +1,6 @@
 package com.example.blogapi.convert;
 
+import com.example.blogapi.constant.NotificationUtil;
 import com.example.blogapi.dto.NotificationDTO;
 import com.example.blogapi.entity.NotificationEntity;
 import org.springframework.stereotype.Component;
@@ -25,15 +26,17 @@ public class NotificationConvert {
         NotificationEntity notificationPostEntity = new NotificationEntity();
         if (dto.getIdPost() != null) {
             notificationPostEntity.setIdPost(dto.getIdPost());
+            notificationPostEntity.setType(NotificationUtil.TYPE_POST);
         }
         if (dto.getIdCourse() != null) {
             notificationPostEntity.setIdCourse(dto.getIdCourse());
+            notificationPostEntity.setType(NotificationUtil.TYPE_COURSE);
         }
-        if (dto.getIdComment() != null) {
+        if (dto.getIdComment() != null && dto.getIdPost() != null) {
             notificationPostEntity.setIdComment(dto.getIdComment());
+            notificationPostEntity.setType(NotificationUtil.TYPE_COMMENT);
         }
         notificationPostEntity.setIdUser(dto.getIdUser());
-        notificationPostEntity.setType(dto.getType());
 
         return notificationPostEntity;
     }
