@@ -16,6 +16,7 @@ import com.example.blogapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,14 +152,14 @@ public class PostService {
         return results;
     }
 
-    public List<PostDTO> courseFindAll() {
+    public List<PostDTO> courseFindAll(long idCourse) {
         List<PostDTO> results = new ArrayList<>();
         List<PostEntity> entities = postRepository.findAll();
         List<UserLoveEntity> userLoveEntities = userLoveRepository.findAll();
 
         for (PostEntity item : entities) {
-            if (item.getIsGroup() != null) {
-                if (item.getIsGroup()) {
+            if (item.getIsGroup() != null && item.getIdGroup() != null) {
+                if (item.getIsGroup() && item.getIdGroup() == idCourse) {
                     for (UserLoveEntity entity : userLoveEntities) {
                         if (entity.getIdPost() == item.getId() && entity.getIdUser() == UserUtil.ID_USER) {
                             item.setIsLove(true);
@@ -195,15 +196,24 @@ public class PostService {
 
     //==============GROUP=================
     public PostDTO save(PostDTO dto, Long idGroup) {
-        UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
-        if (userEntity != null && userEntity.getTypeUser() != null) {
-            if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
-                PostEntity postEntity = postConvert.toEntity(dto);
-                postEntity.setIsGroup(true);
-                postEntity.setIdGroup(idGroup);
-                postEntity = postRepository.save(postEntity);
+        if (dto.getRanker() != null) {
+            if (dto.getRanker().equals(RankerUtil.COPPER) || dto.getRanker().equals(RankerUtil.YELLOW)
+                    || dto.getRanker().equals(RankerUtil.DIAMOND) || dto.getRanker().equals(RankerUtil.CHALLENGE)) {
 
-                return postConvert.toDTO(postEntity);
+                UserEntity userEntity = userRepository.findOneById(dto.getIdUser());
+                if (userEntity != null && userEntity.getTypeUser() != null) {
+                    if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
+                        PostEntity postEntity = postConvert.toEntity(dto);
+                        postEntity.setIsGroup(true);
+                        postEntity.setIdGroup(idGroup);
+                        postEntity = postRepository.save(postEntity);
+
+                        return postConvert.toDTO(postEntity);
+                    }
+                }
+
+                return new PostDTO();
+
             }
         }
 

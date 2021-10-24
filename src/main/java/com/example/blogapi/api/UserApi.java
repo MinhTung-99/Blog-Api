@@ -24,6 +24,16 @@ public class UserApi {
         return userService.searchUser(dto);
     }
 
+    @GetMapping("api/user/search/ranker")
+    public List<UserDTO> searchUserByRanker (@RequestBody SearchDTO dto) {
+        return userService.searchUserByRanker(dto);
+    }
+
+    @GetMapping("api/user/search/{id}")
+    public UserDTO searchOneUser (@PathVariable("id") long id) {
+        return userService.findOneUserById(id);
+    }
+
     @PostMapping("api/register")
     public UserDTO saveUser (@RequestBody UserDTO model) {
         return userService.save(model);

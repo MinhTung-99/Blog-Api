@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -58,7 +60,9 @@ public class HomeController {
 
                 UserUtil.ID_USER = entity.getId();
 
-                return new JwtResponse(token, entity.getId());
+                return new JwtResponse(token, entity.getId(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(new Date()), new SimpleDateFormat("HH:mm").format(new Date())
+                );
             }
         }
 

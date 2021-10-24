@@ -24,9 +24,9 @@ public class PostApi {
         return postService.podCastAll();
     }
 
-    @GetMapping("api/courses")
-    public List<PostDTO> showPostCourse () {
-        return postService.courseFindAll();
+    @GetMapping("api/courses/{idCourse}")
+    public List<PostDTO> showPostCourse (@PathVariable("idCourse") long idCourse) {
+        return postService.courseFindAll(idCourse);
     }
 
     @GetMapping("api/posts/search")

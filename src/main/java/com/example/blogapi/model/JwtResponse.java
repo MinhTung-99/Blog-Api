@@ -11,4 +11,6 @@ public class JwtResponse {
 
     private String jwtToken;
     private Long idUser;
+    private String dateLogin;
+    private String timeLogin;
 }

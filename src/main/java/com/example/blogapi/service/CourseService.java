@@ -2,6 +2,7 @@ package com.example.blogapi.service;
 
 import com.example.blogapi.constant.UserUtil;
 import com.example.blogapi.convert.CourseConvert;
+import com.example.blogapi.convert.SearchCourseDTO;
 import com.example.blogapi.dto.CourseDTO;
 import com.example.blogapi.entity.CourseEntity;
 import com.example.blogapi.entity.UserEntity;
@@ -68,6 +69,26 @@ public class CourseService {
             }
             CourseDTO courseDTO = courseConvert.toDTO(item);
             results.add(courseDTO);
+        }
+
+        return results;
+    }
+
+    public List<CourseDTO> searchCourse(SearchCourseDTO dto) {
+        List<CourseDTO> results = new ArrayList<>();
+        List<CourseEntity> entities = courseRepository.findAll();
+        List<UserJoinCourseEntity> userEntities = userJoinCourseRepository.findAll();
+
+        for (CourseEntity item : entities) {
+            if (dto.getName().contains(item.getName())) {
+                for (UserJoinCourseEntity userJoinCourseEntity : userEntities) {
+                    if (item.getId() == userJoinCourseEntity.getIdCourse() && userJoinCourseEntity.getIdUser() == UserUtil.ID_USER) {
+                        item.setIsJoin(true);
+                    }
+                }
+                CourseDTO courseDTO = courseConvert.toDTO(item);
+                results.add(courseDTO);
+            }
         }
 
         return results;

@@ -1,5 +1,6 @@
 package com.example.blogapi.api;
 
+import com.example.blogapi.convert.SearchCourseDTO;
 import com.example.blogapi.dto.CourseDTO;
 import com.example.blogapi.dto.PostDTO;
 import com.example.blogapi.service.CourseService;
@@ -28,6 +29,11 @@ public class CourseApi {
     @GetMapping("api/course")
     public List<CourseDTO> showCourse () {
         return courseService.findAll();
+    }
+
+    @GetMapping("api/course/search")
+    public List<CourseDTO> searchCourse (@RequestBody SearchCourseDTO dto) {
+        return courseService.searchCourse(dto);
     }
 
     @DeleteMapping("api/course/{id}")

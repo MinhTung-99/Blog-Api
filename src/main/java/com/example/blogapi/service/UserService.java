@@ -29,6 +29,15 @@ public class UserService implements UserDetailsService {
         return new User("admin", "password", new ArrayList<>());
     }
 
+    public UserDTO findOneUserById (long idUser) {
+        UserEntity userEntity = userRepository.findOneById(idUser);
+        if (userEntity != null) {
+            return userConvert.toDTO(userEntity);
+        }
+
+        return new UserDTO();
+    }
+
     public List<UserDTO> findAll() {
         List<UserDTO> results = new ArrayList<>();
         List<UserEntity> entities = userRepository.findAll();
@@ -48,6 +57,22 @@ public class UserService implements UserDetailsService {
         for(UserEntity item : entities) {
             if (item.getEmail() != null) {
                 if (item.getEmail().contains(dto.getTitle())) {
+                    UserDTO userDTO = userConvert.toDTO(item);
+                    results.add(userDTO);
+                }
+            }
+        }
+
+        return results;
+    }
+
+    public List<UserDTO> searchUserByRanker (SearchDTO dto) {
+        List<UserDTO> results = new ArrayList<>();
+        List<UserEntity> entities = userRepository.findAll();
+
+        for(UserEntity item : entities) {
+            if (item.getRanker() != null) {
+                if (item.getRanker().contains(dto.getTitle())) {
                     UserDTO userDTO = userConvert.toDTO(item);
                     results.add(userDTO);
                 }
