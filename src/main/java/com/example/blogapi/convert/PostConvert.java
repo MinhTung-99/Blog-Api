@@ -61,6 +61,7 @@ public class PostConvert {
         postDTO.setNumLove(postEntity.getNumLove());
         postDTO.setIsLove(postEntity.getIsLove());
         postDTO.setAudio(postEntity.getAudio());
+        postDTO.setRanker(postEntity.getRanker());
 
         postDTO.getUser().setFirstName(userEntity.getFirstName());
         postDTO.getUser().setLastName(userEntity.getLastName());

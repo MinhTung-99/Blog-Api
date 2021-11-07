@@ -19,6 +19,11 @@ public class PostApi {
         return postService.findAll();
     }
 
+    @GetMapping("api/posts/visitor")
+    public List<PostDTO> showPostVisitor () {
+        return postService.findAllPostUnAuthentication();
+    }
+
     @GetMapping("api/podcast")
     public List<PostDTO> showPostCast () {
         return postService.podCastAll();

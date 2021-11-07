@@ -112,6 +112,24 @@ public class PostService {
         return results;
     }
 
+    public List<PostDTO> findAllPostUnAuthentication() {
+        List<PostDTO> results = new ArrayList<>();
+        List<PostEntity> entities = postRepository.findAll();
+
+        for (PostEntity item : entities) {
+            if (item.getRanker() != null) {
+                if (item.getRanker().equals(RankerUtil.COPPER)) {
+                    UserEntity userEntity = userRepository.findOneById(item.getIdUser());
+
+                    PostDTO postDTO = postConvert.toDTO(item, userEntity);
+                    results.add(postDTO);
+                }
+            }
+        }
+
+        return results;
+    }
+
     public List<PostDTO> searchPost(SearchDTO searchDTO) {
         List<PostDTO> results = new ArrayList<>();
         List<PostEntity> postEntities = postRepository.findAll();
