@@ -29,6 +29,11 @@ public class PostApi {
         return postService.podCastAll();
     }
 
+    @GetMapping("api/podcast/visitor")
+    public List<PostDTO> showPodCastVisitor () {
+        return postService.podCastAllVisitor();
+    }
+
     @GetMapping("api/courses/{idCourse}")
     public List<PostDTO> showPostCourse (@PathVariable("idCourse") long idCourse) {
         return postService.courseFindAll(idCourse);

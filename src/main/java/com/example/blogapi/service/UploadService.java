@@ -11,6 +11,7 @@ import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +19,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 public class UploadService {
@@ -36,6 +39,9 @@ public class UploadService {
         UserEntity userEntity = userRepository.findOneById(idUser);
         PostEntity postEntity = postRepository.findOneById(idPost);
 
+        final String baseUrl =
+                ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+
         if (userEntity != null && userEntity.getTypeUser() != null) {
             if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
                 Path path = Paths.get("uploads/");
@@ -43,7 +49,7 @@ public class UploadService {
                     InputStream inputStream = photo.getInputStream();
                     Files.copy(inputStream, path.resolve(photo.getOriginalFilename()),
                             StandardCopyOption.REPLACE_EXISTING);
-                    postEntity.setImage("http://localhost:8081/image/" + photo.getOriginalFilename());
+                    postEntity.setImage(baseUrl + "/image/" + photo.getOriginalFilename());
                     postRepository.save(postEntity);
                     return "Success";
                 } catch (IOException e) {
@@ -60,6 +66,9 @@ public class UploadService {
         UserEntity userEntity = userRepository.findOneById(idUser);
         CourseEntity courseEntity = courseRepository.findOneById(idCourse);
 
+        final String baseUrl =
+                ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+
         if (userEntity != null && userEntity.getTypeUser() != null) {
             if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
                 Path path = Paths.get("uploads/");
@@ -67,7 +76,7 @@ public class UploadService {
                     InputStream inputStream = photo.getInputStream();
                     Files.copy(inputStream, path.resolve(photo.getOriginalFilename()),
                             StandardCopyOption.REPLACE_EXISTING);
-                    courseEntity.setImage("http://localhost:8081/image/" + photo.getOriginalFilename());
+                    courseEntity.setImage(baseUrl + "/image/" + photo.getOriginalFilename());
                     courseRepository.save(courseEntity);
                     return "Success";
                 } catch (IOException e) {
@@ -83,6 +92,9 @@ public class UploadService {
 
         UserEntity userEntity = userRepository.findOneById(idUser);
 
+        final String baseUrl =
+                ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+
         if (userEntity != null && userEntity.getTypeUser() != null) {
             if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
                 Path path = Paths.get("uploads/");
@@ -90,7 +102,7 @@ public class UploadService {
                     InputStream inputStream = photo.getInputStream();
                     Files.copy(inputStream, path.resolve(photo.getOriginalFilename()),
                             StandardCopyOption.REPLACE_EXISTING);
-                    userEntity.setAvatar("http://localhost:8081/image/" + photo.getOriginalFilename());
+                    userEntity.setAvatar(baseUrl + "/image/" + photo.getOriginalFilename());
                     userRepository.save(userEntity);
                     return "Success";
                 } catch (IOException e) {
@@ -102,9 +114,12 @@ public class UploadService {
         return "Field";
     }
 
-    public String saveMP4 (MultipartFile mp3, Long idPost, Long idUser) {
+    public String saveMP3(MultipartFile mp3, Long idPost, Long idUser) {
         UserEntity userEntity = userRepository.findOneById(idUser);
         PostEntity postEntity = postRepository.findOneById(idPost);
+
+        final String baseUrl =
+                ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
 
         if (userEntity != null && userEntity.getTypeUser() != null) {
             if (userEntity.getTypeUser().equals(UserUtil.TYPE_USER)) {
@@ -112,8 +127,11 @@ public class UploadService {
 
                 try {
                     InputStream inputStream = mp3.getInputStream();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
+                    String name = simpleDateFormat.format(new Date());
+
                     Files.copy(inputStream, path.resolve(mp3.getOriginalFilename()));
-                    postEntity.setAudio("http://localhost:8081/audio/" + mp3.getOriginalFilename());
+                    postEntity.setAudio(baseUrl + "/audio/" + mp3.getOriginalFilename());
                     postRepository.save(postEntity);
                     return "Success";
                 } catch (IOException e) {

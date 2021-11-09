@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,6 +161,22 @@ public class PostService {
                         item.setIsLove(true);
                     }
                 }
+                UserEntity userEntity = userRepository.findOneById(item.getIdUser());
+
+                PostDTO postDTO = postConvert.toDTO(item, userEntity);
+                results.add(postDTO);
+            }
+        }
+
+        return results;
+    }
+
+    public List<PostDTO> podCastAllVisitor() {
+        List<PostDTO> results = new ArrayList<>();
+        List<PostEntity> entities = postRepository.findAll();
+
+        for (PostEntity item : entities) {
+            if (item.getAudio() != null) {
                 UserEntity userEntity = userRepository.findOneById(item.getIdUser());
 
                 PostDTO postDTO = postConvert.toDTO(item, userEntity);

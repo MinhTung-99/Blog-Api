@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,7 +59,7 @@ public class UploadFileApi {
     @PostMapping("api/upload/mp3/users/{idUser}/posts/{idPost}")
     public String saveMp4(@RequestParam("mp3") MultipartFile mp3, @PathVariable("idPost") long idPost,  @PathVariable("idUser") long idUser) {
 
-        return uploadService.saveMP4(mp3, idPost, idUser);
+        return uploadService.saveMP3(mp3, idPost, idUser);
     }
 
     @RequestMapping(value = "audio/{audio:.+}", method = RequestMethod.GET)
