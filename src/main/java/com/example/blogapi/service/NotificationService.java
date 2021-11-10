@@ -37,9 +37,7 @@ public class NotificationService {
             if (userEntity.getAvatar() != null) {
                 notificationPostDTO.getUser().setAvatar(userEntity.getAvatar());
             }
-            notificationPostDTO.getUser().setFirstName(userEntity.getFirstName());
-            notificationPostDTO.getUser().setLastName(userEntity.getLastName());
-
+            notificationPostDTO.getUser().setName(userEntity.getName());
             return notificationPostDTO;
         } else {
             return new NotificationDTO();
@@ -57,8 +55,7 @@ public class NotificationService {
             if (userEntity.getAvatar() != null) {
                 notificationPostDTO.getUser().setAvatar(userEntity.getAvatar());
             }
-            notificationPostDTO.getUser().setFirstName(userEntity.getFirstName());
-            notificationPostDTO.getUser().setLastName(userEntity.getLastName());
+            notificationPostDTO.getUser().setName(userEntity.getName());
 
             notificationPostDTOS.add(notificationPostDTO);
         }

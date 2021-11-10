@@ -6,8 +6,8 @@ import lombok.Data;
 public class UserDTO extends BaseDTO {
     private String email;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String phoneNumber;
     private String avatar;
     private String typeUser;
     private String ranker;

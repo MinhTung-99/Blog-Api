@@ -18,8 +18,7 @@ public class NotificationDTO extends BaseDTO {
 
     @Data
     public class User {
-        private String firstName;
-        private String lastName;
+        private String name;
         private String avatar;
     }
 }

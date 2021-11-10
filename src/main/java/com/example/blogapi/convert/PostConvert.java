@@ -63,9 +63,7 @@ public class PostConvert {
         postDTO.setAudio(postEntity.getAudio());
         postDTO.setRanker(postEntity.getRanker());
 
-        postDTO.getUser().setFirstName(userEntity.getFirstName());
-        postDTO.getUser().setLastName(userEntity.getLastName());
-
+        postDTO.getUser().setName(userEntity.getName());
         return postDTO;
     }
 

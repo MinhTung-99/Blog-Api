@@ -13,8 +13,8 @@ public class UserEntity extends BaseEntity {
 
     @Column private String email;
     @Column private String password;
-    @Column private String firstName;
-    @Column private String lastName;
+    @Column private String name;
+    @Column private String phoneNumber;
     @Column private String avatar;
     @Column private String ranker;
     @Column private String typeUser;

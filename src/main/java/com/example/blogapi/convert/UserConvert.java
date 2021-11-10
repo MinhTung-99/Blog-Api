@@ -12,8 +12,8 @@ public class UserConvert {
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(dto.getEmail());
         userEntity.setPassword(dto.getPassword());
-        userEntity.setFirstName(dto.getFirstName());
-        userEntity.setLastName(dto.getLastName());
+        userEntity.setName(dto.getName());
+        userEntity.setPhoneNumber(dto.getPhoneNumber());
         userEntity.setAvatar(dto.getAvatar());
         userEntity.setRanker(RankerUtil.COPPER);
 
@@ -25,8 +25,8 @@ public class UserConvert {
         userDTO.setId(userEntity.getId());
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setPassword(userEntity.getPassword());
-        userDTO.setFirstName(userEntity.getFirstName());
-        userDTO.setLastName(userEntity.getLastName());
+        userDTO.setName(userEntity.getName());
+        userDTO.setPhoneNumber(userEntity.getPhoneNumber());
         userDTO.setCreatedDate(userEntity.getCreatedDate());
         userDTO.setModifileDate(userEntity.getModifileDate());
         userDTO.setAvatar(userEntity.getAvatar());
