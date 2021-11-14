@@ -37,17 +37,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf()
+        http.cors()
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers("/api/register").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/visitor").permitAll()
                 .antMatchers("/api/podcast/visitor").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/comments/{idPost}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/comments/{idPost}").permitAll()
                 .antMatchers("/api/posts/search").permitAll()
                 .antMatchers("/api/podcast/search").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/user").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .antMatchers("/api/posts/{idPost}/comments/{idComment}/userLove").permitAll()
                 .antMatchers("/api/comment/{idComment}/userLove").permitAll()
                 .antMatchers(HttpMethod.GET, "api/category").permitAll()
