@@ -11,11 +11,13 @@ public class UserLoveApi {
     @Autowired
     private UserLoveService userLoveService;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("api/love")
     public UserLoveDTO saveUserLove (@RequestBody UserLoveDTO model) {
         return userLoveService.save(model);
     }
 
+    @CrossOrigin(origins = "*")
     @DeleteMapping("api/love/{idPost}")
     public Boolean deleteUserLove(@PathVariable("idPost") long id) {
         return userLoveService.delete(id);
