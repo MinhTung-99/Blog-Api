@@ -37,7 +37,7 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "*")
     @PostMapping("/authenticate")
     public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) {
 
